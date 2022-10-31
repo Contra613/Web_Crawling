@@ -5,7 +5,6 @@ from naver_crawling import naver_crawling
 from google_crawling import google_crawling
 
 # GUI
-import os
 import tkinter as tk
 from tkinter import ttk
 
@@ -13,25 +12,15 @@ from tkinter import filedialog as fd
 from tkinter import scrolledtext
 from os import path, makedirs
 
-# Module level GLOBALS
-GLOBAL_CONST = 42
-fDir = path.dirname(__file__)
-netDir = fDir + '\\Save'
-if not path.exists(netDir):
-    makedirs(netDir, exist_ok=True)
-
 class GUI():
-    def __init__(self):  # Initializer method
-        # Create instance
+    def __init__(self):
         self.win = tk.Tk()
 
-        # Add a title
         self.win.title("Project")
         self.win.resizable(False, False)
 
         self.create_widgets()
 
-    # Modified Button Click Function
     def click_search(self):
         site = self.select_site.get()
         keyword = self.search_ward.get()
@@ -40,19 +29,16 @@ class GUI():
         if(site == 'Naver'):
             naver_crawling(keyword, count, self.progress)
         elif(site == 'Google'):
-            google_crawling(keyword, self.progress)
+            google_crawling(keyword, count, self.progress)
         elif(site == 'All'):
             naver_crawling(keyword, count, self.progress)
-            google_crawling(keyword, self.progress)
-
-
+            google_crawling(keyword, count, self.progress)
 
     def file_select(self):
-        dirName = fd.askdirectory()    # filedialog.askdirectory() : Return 값으로 폴더 주소를 받아온다.
+        dirName = fd.askdirectory()
         print(dirName)
         self.directory.set(dirName)
 
-    # Exit GUI cleanly
     def _quit(self):
         self.win.quit()
         self.win.destroy()
@@ -63,9 +49,7 @@ class GUI():
 
         tab1 = ttk.Frame(tabControl)  # Create a tab
         tabControl.add(tab1, text='웹 크롤링')  # Add the tab
-
         tabControl.pack(expand=1, fill="both")  # Pack to make visible
-
 
         web = ttk.LabelFrame(tab1, text=' Web Crawling ')
         web.grid(column=0, row=0, pady=5, sticky=tk.N)
@@ -120,7 +104,6 @@ class GUI():
         status = ttk.LabelFrame(tab1, text=' Status ')
         status.grid(column=0, row=2, sticky=tk.N)
 
-          # increase sizes
         self.scrol = scrolledtext.ScrolledText(status, width=60, height=10, wrap=tk.WORD)
         self.scrol.grid(column=0, row=0, sticky=tk.W, columnspan=3)
 
