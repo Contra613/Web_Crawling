@@ -6,7 +6,7 @@ import re
 from datetime import datetime
 import os
 
-def naver_crawling(ward, count, status):
+def naver_crawling(ward, count, status, dir):
     date = str(datetime.now())
     date = date[:date.rfind(':')].replace(' ', '_')
     date = date.replace(':', '시') + '분'
@@ -45,7 +45,8 @@ def naver_crawling(ward, count, status):
 
     news_df = DataFrame(news_dict).T
 
-    folder_path = os.getcwd()
+    #folder_path = os.getcwd()
+    folder_path = dir
     xlsx_file_name = '네이버뉴스_{}_{}.xlsx'.format(query, date)
     news_df.to_excel(excel_writer=folder_path + '\\' + xlsx_file_name)
 

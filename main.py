@@ -1,16 +1,19 @@
 # Naver
-from naver_crawling import naver_crawling
+from News.naver_crawling import naver_crawling
 
 # Google
-from google_crawling import google_crawling
+from News.google_crawling import google_crawling
 
 # GUI
+import os
 import tkinter as tk
 from tkinter import ttk
 
 from tkinter import filedialog as fd
-from tkinter import scrolledtext
-from os import path, makedirs
+from tkinter import messagebox
+
+global bool
+bool = False
 
 class GUI():
     def __init__(self):
@@ -26,18 +29,30 @@ class GUI():
         keyword = self.search_ward.get()
         count = self.search_count.get()
 
+        if(bool == True):
+            dir = self.file_dirName
+        else:
+            dir = os.getcwd()
+
+        if(keyword == '' or count == 0):
+            messagebox.showerror(title='Error', message="키워드와 개수를 다시 입력해주세요.")
+            return
+
         if(site == 'Naver'):
-            naver_crawling(keyword, count, self.progress)
+            naver_crawling(keyword, count, self.progress, dir)
         elif(site == 'Google'):
-            google_crawling(keyword, count, self.progress)
+            google_crawling(keyword, count, self.progress, dir)
         elif(site == 'All'):
-            naver_crawling(keyword, count, self.progress)
-            google_crawling(keyword, count, self.progress)
+            naver_crawling(keyword, count, self.progress, dir)
+            google_crawling(keyword, count, self.progress, dir)
 
     def file_select(self):
         dirName = fd.askdirectory()
-        print(dirName)
         self.directory.set(dirName)
+
+        self.file_dirName = dirName.replace('/', '\\')
+        global bool
+        bool = True
 
     def _quit(self):
         self.win.quit()
@@ -93,22 +108,14 @@ class GUI():
         file_select.grid(column=0, row=0, sticky=tk.W)
 
         self.directory = tk.StringVar()
-        self.directory_entered = ttk.Entry(file, width=49, textvariable=self.directory, state='readonly')
-        self.directory_entered.grid(column=0, row=1, sticky=tk.W)
+        self.directory_entered = ttk.Entry(file, width=48, textvariable=self.directory, state='readonly')
+        self.directory_entered.grid(column=0, row=1, padx=5, sticky=tk.W)
 
         self.select = ttk.Button(file, text="찾아보기", command=self.file_select)
         self.select.grid(column=1, row=1, sticky=tk.W)
 
-
-        #########################################################################################
-        status = ttk.LabelFrame(tab1, text=' Status ')
-        status.grid(column=0, row=2, sticky=tk.N)
-
-        self.scrol = scrolledtext.ScrolledText(status, width=60, height=10, wrap=tk.WORD)
-        self.scrol.grid(column=0, row=0, sticky=tk.W, columnspan=3)
-
-        self.progress = ttk.Label(status, text='')
-        self.progress.grid(column=0, row=1, pady=10, sticky=tk.W)
+        self.progress = ttk.Label(file, text='')
+        self.progress.grid(column=0, row=2, pady=10, sticky=tk.W)
 
 # Start GUI
 # ======================

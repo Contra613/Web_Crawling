@@ -7,7 +7,7 @@ import pandas as pd
 import requests
 from datetime import datetime
 
-def google_crawling(ward, count, status):
+def google_crawling(ward, count, status, dir):
     date = str(datetime.now())
     date = date[:date.rfind(':')].replace(' ', '_')
     date = date.replace(':', '시') + '분'
@@ -19,7 +19,7 @@ def google_crawling(ward, count, status):
     options.add_argument('window-size=1920x1080')
     options.add_argument('disable-gpu')
 
-    driver = webdriver.Chrome(executable_path='Chrome/chromedriver.exe', chrome_options=options)
+    driver = webdriver.Chrome(executable_path='../Chrome/chromedriver.exe', chrome_options=options)
     driver.get('https://news.google.com/?hl=ko&gl=KR&ceid=KR%3Ako')
     driver.implicitly_wait(3)
 
@@ -39,12 +39,6 @@ def google_crawling(ward, count, status):
     links = []
     news_cnt = 0
 
-    # for link in soup.select('h3 > a'):
-    #     href = 'https://news.google.com' + link.get('href')[1:]
-    #     title = link.string
-    #     titles.append(title)
-    #     links.append(href)
-
     for link in soup.select('h3 > a'):
         if(count > news_cnt):
             href = 'https://news.google.com' + link.get('href')[1:]
@@ -58,7 +52,8 @@ def google_crawling(ward, count, status):
     data = {'title': titles, 'link': links}
     data_frame = pd.DataFrame(data, columns=['title', 'link'])
 
-    folder_path = os.getcwd()
+    #folder_path = os.getcwd()
+    folder_path = dir
     xlsx_file_name = '구글 뉴스_{}_{}.xlsx'.format(keywords, date)
     data_frame.to_excel(excel_writer=folder_path + '\\' + xlsx_file_name)
 
