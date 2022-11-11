@@ -45,7 +45,6 @@ def naver_crawling(ward, count, status, dir):
 
     news_df = DataFrame(news_dict).T
 
-    #folder_path = os.getcwd()
     folder_path = dir
     xlsx_file_name = '네이버뉴스_{}_{}.xlsx'.format(query, date)
     news_df.to_excel(excel_writer=folder_path + '\\' + xlsx_file_name)
