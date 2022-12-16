@@ -49,7 +49,7 @@ class GUI():
             naver_crawling(keyword, count, self.progress, dir)
             google_crawling(keyword, count, self.progress, dir, version)
 
-    def file_select(self):
+    def file_selects(self):
         dirName = fd.askdirectory()
         self.directory.set(dirName)
 
@@ -116,7 +116,7 @@ class GUI():
         self.directory_entered = ttk.Entry(file, width=48, textvariable=self.directory, state='readonly')
         self.directory_entered.grid(column=0, row=1, padx=5, sticky=tk.W)
 
-        self.select = ttk.Button(file, text="찾아보기", command=self.file_select)
+        self.select = ttk.Button(file, text="찾아보기", command=self.file_selects)
         self.select.grid(column=1, row=1, sticky=tk.W)
 
         self.progress = ttk.Label(file, text='')
