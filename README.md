@@ -15,6 +15,7 @@
 
 
 ![329](https://user-images.githubusercontent.com/70179352/211183520-6e23024b-646b-4e1d-ad7e-3525d28f5f3d.jpg)
+
 두 번째 탭은 '설정 및 도움말'이다.
 
 
